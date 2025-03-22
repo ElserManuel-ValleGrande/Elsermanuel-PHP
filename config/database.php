@@ -3,7 +3,7 @@ class Database {
     private $host = "localhost";
     private $db_name = "testEdulink";
     private $username = "root";
-    private $password = "";
+    private $password = "password12";
     private $conn;
 
     public function connect() {
