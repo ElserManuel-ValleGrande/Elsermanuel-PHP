@@ -1,0 +1,113 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #b3cde0, #6497b1);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Contenedor del formulario */
+.login-container {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+    animation: fadeIn 0.8s ease-in-out;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-container:hover {
+    transform: scale(1.02);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.25);
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Título */
+h2 {
+    color: #03396c;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+/* Campos de entrada */
+input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    margin-bottom: 15px;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+input:focus {
+    border-color: #005b96;
+    outline: none;
+}
+
+/* Botón de envío */
+button {
+    width: 100%;
+    padding: 12px;
+    background: #005b96;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background: #03396c;
+    transform: scale(1.03);
+}
+
+/* Mensaje de error */
+.error-message {
+    color: red;
+    font-weight: bold;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+/* Enlace a registro */
+p {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+p a {
+    color: #005b96;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+p a:hover {
+    text-decoration: underline;
+    color: #03396c;
+}

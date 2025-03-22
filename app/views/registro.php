@@ -11,31 +11,33 @@ if (isset($_SESSION['usuario_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../public/css/styles-registro.css">
     <title>Registro de Usuario</title>
+    <link rel="stylesheet" href="../public/css/styles-registro.css">
 </head>
 <body>
-    <h2>Registro de Usuario</h2>
+    <div class="container">
+        <h2>Registro de Usuario</h2>
 
-    <?php
-    if (isset($_GET['error'])) {
-        echo "<p style='color:red'>" . htmlspecialchars($_GET['error']) . "</p>";
-    }
-    ?>
+        <?php
+        if (isset($_GET['error'])) {
+            echo "<p class='error'>" . htmlspecialchars($_GET['error']) . "</p>";
+        }
+        ?>
 
-    <form action="../controllers/UsuarioController.php?action=registro" method="POST">
-        <label for="nombre">Nombre Completo:</label>
-        <input type="text" name="nombre" required>
+        <form action="../controllers/UsuarioController.php?action=registro" method="POST">
+            <label for="nombre">Nombre Completo:</label>
+            <input type="text" name="nombre" required>
 
-        <label for="email">Correo Electrónico:</label>
-        <input type="email" name="email" required>
+            <label for="email">Correo Electrónico:</label>
+            <input type="email" name="email" required>
 
-        <label for="password">Contraseña:</label>
-        <input type="password" name="password" required>
+            <label for="password">Contraseña:</label>
+            <input type="password" name="password" required>
 
-        <button type="submit">Registrarse</button>
-    </form>
+            <button type="submit">Registrarse</button>
+        </form>
 
-    <p>¿Ya tienes cuenta? <a href="login.php">Inicia sesión aquí</a></p>
+        <p>¿Ya tienes cuenta? <a href="login.php">Inicia sesión aquí</a></p>
+    </div>
 </body>
 </html>

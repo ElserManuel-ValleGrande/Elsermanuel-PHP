@@ -23,5 +23,12 @@ class Usuario {
             return false;
         }
     }
+
+    public function obtenerUsuarioPorEmail($email) {
+        $sql = "SELECT * FROM usuarios WHERE email = :email";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['email' => $email]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
 ?>
