@@ -11,7 +11,6 @@ class CursoController {
         $this->cursoModel = new Curso();
     }
     
-    // Listar cursos del usuario actual
     public function listarCursos() {
         if (!isset($_SESSION['usuario_id'])) {
             header("Location: ../views/login.php");
@@ -20,7 +19,6 @@ class CursoController {
         return $this->cursoModel->obtenerCursos($_SESSION['usuario_id']);
     }
     
-    // Nuevo método para listar cursos con paginación
     public function listarCursosPaginados($offset, $limit) {
         if (!isset($_SESSION['usuario_id'])) {
             header("Location: ../views/login.php");
@@ -29,7 +27,6 @@ class CursoController {
         return $this->cursoModel->obtenerCursosPaginados($_SESSION['usuario_id'], $offset, $limit);
     }
     
-    // Nuevo método para contar el total de cursos
     public function contarCursos() {
         if (!isset($_SESSION['usuario_id'])) {
             header("Location: ../views/login.php");
@@ -68,7 +65,6 @@ class CursoController {
         return $this->cursoModel->obtenerCursoPorId($id);
     }
     
-    // Editar un curso existente
     public function editarCurso() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Verificar si el usuario está autenticado
@@ -99,7 +95,6 @@ class CursoController {
         }
     }
     
-    // Eliminar un curso
     public function eliminarCurso() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Verificar si el usuario está autenticado
