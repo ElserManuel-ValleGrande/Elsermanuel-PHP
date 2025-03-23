@@ -1,33 +1,139 @@
+/* ---- ESTILOS GENERALES ---- */
 body {
-    background: #f4f4f4;
+    background: #f0f2f5;
     font-family: 'Arial', sans-serif;
-    text-align: center;
+    margin: 0;
+    padding: 0;
 }
 
+/* ---- CONTENEDOR PRINCIPAL ---- */
 .dashboard-container {
-    background: white;
+    max-width: 1100px;
+    margin: 30px auto;
     padding: 20px;
-    border-radius: 10px;
-    width: 50%;
-    margin: auto;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-.cursos-grid {
+/* ---- CABECERA ---- */
+header {
     display: flex;
-    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+/* ---- BOTONES ---- */
+.acciones {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-crear, .btn-logout {
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-crear {
+    background: #4CAF50;
+    color: white;
+}
+
+.btn-logout {
+    background: #d9534f;
+    color: white;
+}
+
+.btn-crear:hover {
+    background: #388E3C;
+}
+
+.btn-logout:hover {
+    background: #C9302C;
+}
+
+/* ---- GRID DE CURSOS ---- */
+.cursos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
 }
 
+/* ---- TARJETA DE CURSO ---- */
 .curso-card {
-    background: #fff;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.btn-crear-curso {
-    background: green;
-    color: white;
+.curso-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* ---- IMAGEN DEL CURSO ---- */
+.curso-img img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+/* ---- CONTENIDO DEL CURSO ---- */
+.curso-info {
+    padding: 15px;
+}
+
+.curso-info h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.curso-info p {
+    font-size: 14px;
+    color: #555;
+    margin: 4px 0;
+}
+
+/* ---- DESCRIPCIÓN ---- */
+.descripcion {
+    font-size: 13px;
+    color: #777;
+    line-height: 1.4;
+}
+
+/* ---- PIE DE TARJETA ---- */
+.curso-footer {
+    display: flex;
+    justify-content: space-between;
     padding: 10px;
+    background: #f9f9f9;
+    border-top: 1px solid #eee;
+}
+
+.btn-detalles, .btn-editar {
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-detalles:hover {
+    background: #0056b3;
+}
+
+.btn-editar:hover {
+    background: #e68900;
 }
