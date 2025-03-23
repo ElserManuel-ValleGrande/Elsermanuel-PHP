@@ -434,6 +434,59 @@ h2 {
     }
 }
 
+.btn-eliminar-cuenta {
+    background-color: #ff3333;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: 10px;
+    transition: background-color 0.3s;
+}
+
+.btn-eliminar-cuenta:hover {
+    background-color: #cc0000;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.btn-cancelar {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.btn-confirmar-eliminar {
+    background-color: #dc3545;
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.close-delete {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-delete:hover {
+    color: black;
+}
+
 @media (max-width: 480px) {
     h1 {
         font-size: 22px;

@@ -83,6 +83,27 @@ class UsuarioController {
             exit();
         }
     }
+
+    public function eliminarCuenta() {
+        if (!isset($_SESSION['usuario_id'])) {
+            header("Location: ../views/login.php");
+            exit();
+        }
+        
+        $usuario_id = $_SESSION['usuario_id'];
+        $usuario = new Usuario();
+        $resultado = $usuario->eliminarCuenta($usuario_id);
+        
+        if ($resultado) {
+            // Destruir la sesión
+            session_destroy();
+            header("Location: ../views/login.php?mensaje=Cuenta eliminada correctamente");
+        } else {
+            header("Location: ../views/dashboard.php?error=Error al eliminar la cuenta");
+        }
+        exit();
+    }
+
 }
 
 if (isset($_GET['action'])) {
@@ -96,6 +117,8 @@ if (isset($_GET['action'])) {
         $controller->logout();
     } elseif ($_GET['action'] == 'cambiarPassword') {
         $controller->cambiarPassword();
+    } elseif ($_GET['action'] == 'eliminarCuenta') {
+        $controller->eliminarCuenta();
     }
 }
 ?>

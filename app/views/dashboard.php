@@ -1,38 +1,32 @@
 <?php 
 require_once __DIR__ . '/../controllers/CursoController.php';
 
-// Iniciar sesión si no está activa
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Verificar si el usuario está autenticado
 if (!isset($_SESSION['usuario_id'])) {
     header("Location: login.php");
     exit();
 }
 
 $controller = new CursoController();
-$totalCursos = $controller->contarCursos(); // Necesitamos añadir esta función al controlador
+$totalCursos = $controller->contarCursos();
 
-// Configuración de paginación
+// paginación
 $cursosPerPage = 6;
 $totalPages = ceil($totalCursos / $cursosPerPage);
-
-// Obtener la página actual
 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
-// Validar que la página esté dentro del rango válido
+// Validar
 if ($currentPage < 1) {
     $currentPage = 1;
 } elseif ($currentPage > $totalPages && $totalPages > 0) {
     $currentPage = $totalPages;
 }
 
-// Calcular el offset para la consulta SQL
 $offset = ($currentPage - 1) * $cursosPerPage;
 
-// Obtener los cursos para la página actual
 $cursos = $controller->listarCursosPaginados($offset, $cursosPerPage);
 ?>
 
@@ -52,10 +46,11 @@ $cursos = $controller->listarCursosPaginados($offset, $cursosPerPage);
         <header>
             <h1>Bienvenido, <?php echo isset($_SESSION['usuario_nombre']) ? htmlspecialchars($_SESSION['usuario_nombre']) : 'Usuario'; ?>!</h1>
             <div class="acciones">
-                <button id="btnCambiarPassword" class="btn-cambiar-password"><i class="fas fa-key"></i> Cambiar Contraseña</button>
-                <a href="crear_curso.php" class="btn-crear"><i class="fas fa-plus"></i> Crear Curso</a>
-                <a href="../controllers/UsuarioController.php?action=logout" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
-            </div>
+    <button id="btnCambiarPassword" class="btn-cambiar-password"><i class="fas fa-key"></i> Cambiar Contraseña</button>
+    <a href="crear_curso.php" class="btn-crear"><i class="fas fa-plus"></i> Crear Curso</a>
+    <button id="btnEliminarCuenta" class="btn-eliminar-cuenta"><i class="fas fa-user-slash"></i> Eliminar Cuenta</button>
+    <a href="../controllers/UsuarioController.php?action=logout" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
+</div>
         </header>
         
         <!-- Resto del código del dashboard permanece igual -->
@@ -147,87 +142,117 @@ $cursos = $controller->listarCursosPaginados($offset, $cursosPerPage);
         </div>
     </div>
 
+    <!-- Modal para eliminar cuenta -->
+<div id="modalEliminarCuenta" class="modal">
+    <div class="modal-content">
+        <span class="close-delete">&times;</span>
+        <h2>Eliminar Cuenta</h2>
+        <p>¿Estás seguro que deseas eliminar tu cuenta? Esta acción no se puede deshacer y perderás todos tus cursos.</p>
+        <div class="modal-buttons">
+            <button id="btnCancelarEliminacion" class="btn-cancelar">Cancelar</button>
+            <a href="../controllers/UsuarioController.php?action=eliminarCuenta" class="btn-confirmar-eliminar">Sí, eliminar mi cuenta</a>
+        </div>
+    </div>
+</div>
+
     <!-- Script para manejar el modal y el cambio de contraseña -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Referencias a elementos del DOM
-            const modal = document.getElementById('modalCambiarPassword');
-            const btnAbrirModal = document.getElementById('btnCambiarPassword');
-            const btnCerrarModal = document.querySelector('.close');
-            const formCambiarPassword = document.getElementById('formCambiarPassword');
-            const alertMessage = document.getElementById('alertMessage');
+    // Modal para cambiar contraseña
+    const modalPassword = document.getElementById('modalCambiarPassword');
+    const btnAbrirModalPassword = document.getElementById('btnCambiarPassword');
+    const btnCerrarModalPassword = document.querySelector('.close');
+    const formCambiarPassword = document.getElementById('formCambiarPassword');
+    const alertMessage = document.getElementById('alertMessage');
 
-            // Abrir modal
-            btnAbrirModal.addEventListener('click', function() {
-                modal.style.display = 'block';
-            });
+    // Modal para eliminar cuenta
+    const modalEliminarCuenta = document.getElementById('modalEliminarCuenta');
+    const btnEliminarCuenta = document.getElementById('btnEliminarCuenta');
+    const btnCerrarModalEliminar = document.querySelector('.close-delete');
+    const btnCancelarEliminacion = document.getElementById('btnCancelarEliminacion');
+    
+    // Eventos para el modal de cambiar contraseña
+    btnAbrirModalPassword.addEventListener('click', function() {
+        modalPassword.style.display = 'block';
+    });
 
-            // Cerrar modal
-            btnCerrarModal.addEventListener('click', function() {
-                modal.style.display = 'none';
-                resetForm();
-            });
+    btnCerrarModalPassword.addEventListener('click', function() {
+        modalPassword.style.display = 'none';
+        resetForm();
+    });
 
-            // Cerrar modal haciendo clic fuera de él
-            window.addEventListener('click', function(event) {
-                if (event.target == modal) {
-                    modal.style.display = 'none';
+    // Eventos para el modal de eliminar cuenta
+    btnEliminarCuenta.addEventListener('click', function() {
+        modalEliminarCuenta.style.display = 'block';
+    });
+    
+    btnCerrarModalEliminar.addEventListener('click', function() {
+        modalEliminarCuenta.style.display = 'none';
+    });
+    
+    btnCancelarEliminacion.addEventListener('click', function() {
+        modalEliminarCuenta.style.display = 'none';
+    });
+
+    // Cerrar modales al hacer clic fuera de ellos
+    window.addEventListener('click', function(event) {
+        if (event.target == modalPassword) {
+            modalPassword.style.display = 'none';
+            resetForm();
+        }
+        if (event.target == modalEliminarCuenta) {
+            modalEliminarCuenta.style.display = 'none';
+        }
+    });
+
+    // Manejo del formulario de cambio de contraseña
+    formCambiarPassword.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const nuevaPassword = document.getElementById('nuevaPassword').value;
+        const confirmarPassword = document.getElementById('confirmarPassword').value;
+        
+        if (nuevaPassword !== confirmarPassword) {
+            mostrarAlerta('Las contraseñas no coinciden', 'danger');
+            return;
+        }
+        
+        fetch('../controllers/UsuarioController.php?action=cambiarPassword', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'nueva_password=' + encodeURIComponent(nuevaPassword)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                mostrarAlerta(data.message, 'success');
+                setTimeout(() => {
+                    modalPassword.style.display = 'none';
                     resetForm();
-                }
-            });
-
-            // Manejar el envío del formulario
-            formCambiarPassword.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const nuevaPassword = document.getElementById('nuevaPassword').value;
-                const confirmarPassword = document.getElementById('confirmarPassword').value;
-                
-                // Validar que las contraseñas coincidan
-                if (nuevaPassword !== confirmarPassword) {
-                    mostrarAlerta('Las contraseñas no coinciden', 'danger');
-                    return;
-                }
-                
-                // Enviar datos al servidor
-                fetch('../controllers/UsuarioController.php?action=cambiarPassword', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: 'nueva_password=' + encodeURIComponent(nuevaPassword)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        mostrarAlerta(data.message, 'success');
-                        setTimeout(() => {
-                            modal.style.display = 'none';
-                            resetForm();
-                        }, 2000);
-                    } else {
-                        mostrarAlerta(data.message, 'danger');
-                    }
-                })
-                .catch(error => {
-                    mostrarAlerta('Error al procesar la solicitud', 'danger');
-                    console.error('Error:', error);
-                });
-            });
-
-            // Función para mostrar alertas
-            function mostrarAlerta(mensaje, tipo) {
-                alertMessage.className = 'alert alert-' + tipo;
-                alertMessage.textContent = mensaje;
-                alertMessage.style.display = 'block';
+                }, 2000);
+            } else {
+                mostrarAlerta(data.message, 'danger');
             }
-
-            // Función para resetear el formulario
-            function resetForm() {
-                formCambiarPassword.reset();
-                alertMessage.style.display = 'none';
-            }
+        })
+        .catch(error => {
+            mostrarAlerta('Error al procesar la solicitud', 'danger');
+            console.error('Error:', error);
         });
+    });
+
+    function mostrarAlerta(mensaje, tipo) {
+        alertMessage.className = 'alert alert-' + tipo;
+        alertMessage.textContent = mensaje;
+        alertMessage.style.display = 'block';
+    }
+
+    function resetForm() {
+        formCambiarPassword.reset();
+        alertMessage.style.display = 'none';
+    }
+});
     </script>
 </body>
 </html>

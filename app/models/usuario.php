@@ -42,5 +42,32 @@ class Usuario {
             return false;
         }
     }
+
+    public function eliminarCuenta($usuario_id) {
+        try {
+            // Comenzar una transacción
+            $this->conn->beginTransaction();
+            
+            // Primero eliminar los cursos asociados al usuario
+            $sql_cursos = "DELETE FROM cursos WHERE usuario_id = :usuario_id";
+            $stmt_cursos = $this->conn->prepare($sql_cursos);
+            $stmt_cursos->bindParam(":usuario_id", $usuario_id);
+            $stmt_cursos->execute();
+            
+            // Luego eliminar la cuenta del usuario
+            $sql_usuario = "DELETE FROM usuarios WHERE id = :id";
+            $stmt_usuario = $this->conn->prepare($sql_usuario);
+            $stmt_usuario->bindParam(":id", $usuario_id);
+            $stmt_usuario->execute();
+            
+            // Confirmar la transacción
+            $this->conn->commit();
+            return true;
+        } catch (PDOException $e) {
+            // Revertir cambios si hay error
+            $this->conn->rollBack();
+            return false;
+        }
+    }
 }
 ?>
