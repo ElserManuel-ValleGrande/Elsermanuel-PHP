@@ -9,15 +9,15 @@ class UsuarioController {
             $nombre = trim($_POST["nombre"]);
             $email = trim($_POST["email"]);
             $password = trim($_POST["password"]);
-
+            
             if (empty($nombre) || empty($email) || empty($password)) {
                 header("Location: ../views/registro.php?error=Todos los campos son obligatorios");
                 exit();
             }
-
+            
             $usuario = new Usuario();
             $resultado = $usuario->registrarUsuario($nombre, $email, $password);
-
+            
             if ($resultado) {
                 header("Location: ../views/login.php");
             } else {
@@ -26,20 +26,20 @@ class UsuarioController {
             exit();
         }
     }
-
+    
     public function login() {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $email = trim($_POST["email"]);
             $password = trim($_POST["password"]);
-
+            
             if (empty($email) || empty($password)) {
                 header("Location: ../views/login.php?error=Correo y contraseña requeridos");
                 exit();
             }
-
+            
             $usuario = new Usuario();
             $user = $usuario->obtenerUsuarioPorEmail($email);
-
+            
             if ($user && password_verify($password, $user['password'])) {
                 $_SESSION['usuario_id'] = $user['id'];
                 $_SESSION['usuario_nombre'] = $user['nombre'];
@@ -50,23 +50,52 @@ class UsuarioController {
             exit();
         }
     }
-
+    
     public function logout() {
         session_destroy();
         header("Location: ../views/login.php");
         exit();
     }
+    
+    public function cambiarPassword() {
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nueva_password'])) {
+            if (!isset($_SESSION['usuario_id'])) {
+                echo json_encode(['success' => false, 'message' => 'Usuario no autenticado']);
+                exit();
+            }
+            
+            $usuario_id = $_SESSION['usuario_id'];
+            $nueva_password = trim($_POST['nueva_password']);
+            
+            if (empty($nueva_password)) {
+                echo json_encode(['success' => false, 'message' => 'La contraseña no puede estar vacía']);
+                exit();
+            }
+            
+            $usuario = new Usuario();
+            $resultado = $usuario->cambiarPassword($usuario_id, $nueva_password);
+            
+            if ($resultado) {
+                echo json_encode(['success' => true, 'message' => 'Contraseña actualizada correctamente']);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Error al actualizar la contraseña']);
+            }
+            exit();
+        }
+    }
 }
 
 if (isset($_GET['action'])) {
     $controller = new UsuarioController();
-
+    
     if ($_GET['action'] == 'registro') {
         $controller->registro();
     } elseif ($_GET['action'] == 'login') {
         $controller->login();
     } elseif ($_GET['action'] == 'logout') {
         $controller->logout();
+    } elseif ($_GET['action'] == 'cambiarPassword') {
+        $controller->cambiarPassword();
     }
 }
 ?>

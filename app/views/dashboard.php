@@ -45,17 +45,20 @@ $cursos = $controller->listarCursosPaginados($offset, $cursosPerPage);
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../public/css/dashboard-style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
 </head>
 <body>
     <div class="dashboard-container">
         <header>
             <h1>Bienvenido, <?php echo isset($_SESSION['usuario_nombre']) ? htmlspecialchars($_SESSION['usuario_nombre']) : 'Usuario'; ?>!</h1>
             <div class="acciones">
+                <button id="btnCambiarPassword" class="btn-cambiar-password"><i class="fas fa-key"></i> Cambiar Contraseña</button>
                 <a href="crear_curso.php" class="btn-crear"><i class="fas fa-plus"></i> Crear Curso</a>
                 <a href="../controllers/UsuarioController.php?action=logout" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
             </div>
         </header>
         
+        <!-- Resto del código del dashboard permanece igual -->
         <h2>Tus Cursos</h2>
         <div class="cursos-grid">
             <?php if (!empty($cursos)): ?>
@@ -123,5 +126,108 @@ $cursos = $controller->listarCursosPaginados($offset, $cursosPerPage);
             </div>
         <?php endif; ?>
     </div>
+
+    <!-- Modal para cambiar contraseña -->
+    <div id="modalCambiarPassword" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Cambiar Contraseña</h2>
+            <div id="alertMessage" style="display: none;"></div>
+            <form id="formCambiarPassword">
+                <div class="form-group">
+                    <label for="nuevaPassword">Nueva Contraseña:</label>
+                    <input type="password" id="nuevaPassword" name="nuevaPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmarPassword">Confirmar Nueva Contraseña:</label>
+                    <input type="password" id="confirmarPassword" name="confirmarPassword" required>
+                </div>
+                <button type="submit" class="btn-submit">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script para manejar el modal y el cambio de contraseña -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Referencias a elementos del DOM
+            const modal = document.getElementById('modalCambiarPassword');
+            const btnAbrirModal = document.getElementById('btnCambiarPassword');
+            const btnCerrarModal = document.querySelector('.close');
+            const formCambiarPassword = document.getElementById('formCambiarPassword');
+            const alertMessage = document.getElementById('alertMessage');
+
+            // Abrir modal
+            btnAbrirModal.addEventListener('click', function() {
+                modal.style.display = 'block';
+            });
+
+            // Cerrar modal
+            btnCerrarModal.addEventListener('click', function() {
+                modal.style.display = 'none';
+                resetForm();
+            });
+
+            // Cerrar modal haciendo clic fuera de él
+            window.addEventListener('click', function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                    resetForm();
+                }
+            });
+
+            // Manejar el envío del formulario
+            formCambiarPassword.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const nuevaPassword = document.getElementById('nuevaPassword').value;
+                const confirmarPassword = document.getElementById('confirmarPassword').value;
+                
+                // Validar que las contraseñas coincidan
+                if (nuevaPassword !== confirmarPassword) {
+                    mostrarAlerta('Las contraseñas no coinciden', 'danger');
+                    return;
+                }
+                
+                // Enviar datos al servidor
+                fetch('../controllers/UsuarioController.php?action=cambiarPassword', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'nueva_password=' + encodeURIComponent(nuevaPassword)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        mostrarAlerta(data.message, 'success');
+                        setTimeout(() => {
+                            modal.style.display = 'none';
+                            resetForm();
+                        }, 2000);
+                    } else {
+                        mostrarAlerta(data.message, 'danger');
+                    }
+                })
+                .catch(error => {
+                    mostrarAlerta('Error al procesar la solicitud', 'danger');
+                    console.error('Error:', error);
+                });
+            });
+
+            // Función para mostrar alertas
+            function mostrarAlerta(mensaje, tipo) {
+                alertMessage.className = 'alert alert-' + tipo;
+                alertMessage.textContent = mensaje;
+                alertMessage.style.display = 'block';
+            }
+
+            // Función para resetear el formulario
+            function resetForm() {
+                formCambiarPassword.reset();
+                alertMessage.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
