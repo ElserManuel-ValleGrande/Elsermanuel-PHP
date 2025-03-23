@@ -1,16 +1,17 @@
 /* ---- ESTILOS GENERALES ---- */
 body {
     background: #f0f2f5;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
+    color: #333;
 }
 
 /* ---- CONTENEDOR PRINCIPAL ---- */
 .dashboard-container {
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 30px auto;
-    padding: 20px;
+    padding: 25px;
 }
 
 /* ---- CABECERA ---- */
@@ -18,27 +19,44 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 h1 {
-    font-size: 24px;
-    color: #333;
+    font-size: 26px;
+    color: #2c3e50;
+    margin: 0;
+    font-weight: 600;
+}
+
+h2 {
+    font-size: 22px;
+    color: #2c3e50;
+    margin: 25px 0 20px;
+    font-weight: 600;
 }
 
 /* ---- BOTONES ---- */
 .acciones {
     display: flex;
-    gap: 12px;
+    gap: 15px;
 }
 
 .btn-crear, .btn-logout {
     text-decoration: none;
-    padding: 10px 15px;
+    padding: 12px 18px;
     border-radius: 8px;
-    font-size: 14px;
-    font-weight: bold;
-    transition: 0.3s;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .btn-crear {
@@ -47,93 +65,324 @@ h1 {
 }
 
 .btn-logout {
-    background: #d9534f;
+    background: #e74c3c;
     color: white;
 }
 
 .btn-crear:hover {
     background: #388E3C;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
 .btn-logout:hover {
-    background: #C9302C;
+    background: #c0392b;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* ---- GRID DE CURSOS ---- */
 .cursos-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 25px;
 }
 
 /* ---- TARJETA DE CURSO ---- */
 .curso-card {
     background: white;
-    border-radius: 10px;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
 }
 
 .curso-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 22px rgba(0, 0, 0, 0.12);
 }
 
 /* ---- IMAGEN DEL CURSO ---- */
+.curso-img {
+    height: 180px;
+    overflow: hidden;
+}
+
 .curso-img img {
     width: 100%;
-    height: 160px;
+    height: 100%;
     object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.curso-card:hover .curso-img img {
+    transform: scale(1.05);
 }
 
 /* ---- CONTENIDO DEL CURSO ---- */
 .curso-info {
-    padding: 15px;
+    padding: 20px;
+    flex-grow: 1;
 }
 
 .curso-info h3 {
-    font-size: 18px;
-    color: #333;
-    margin-bottom: 5px;
+    font-size: 20px;
+    color: #2c3e50;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-weight: 600;
 }
 
 .curso-info p {
-    font-size: 14px;
+    font-size: 15px;
     color: #555;
-    margin: 4px 0;
+    margin: 8px 0;
+    line-height: 1.5;
+}
+
+.curso-info p strong {
+    color: #3498db;
+    font-weight: 600;
 }
 
 /* ---- DESCRIPCIÓN ---- */
 .descripcion {
-    font-size: 13px;
+    font-size: 14px;
     color: #777;
-    line-height: 1.4;
+    line-height: 1.6;
+    margin-top: 12px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* ---- PIE DE TARJETA ---- */
 .curso-footer {
     display: flex;
     justify-content: space-between;
-    padding: 10px;
-    background: #f9f9f9;
-    border-top: 1px solid #eee;
+    padding: 15px;
+    background: #f8fafc;
+    border-top: 1px solid #eef2f7;
 }
 
-.btn-detalles, .btn-editar {
+.btn-editar, .btn-eliminar {
     border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
+    padding: 10px 16px;
+    border-radius: 6px;
     cursor: pointer;
     font-size: 14px;
-    font-weight: bold;
-    transition: 0.3s;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
-.btn-detalles:hover {
-    background: #0056b3;
+.btn-editar {
+    background: #f39c12;
+    color: white;
+}
+
+.btn-eliminar {
+    background: #e74c3c;
+    color: white;
 }
 
 .btn-editar:hover {
-    background: #e68900;
+    background: #d68910;
+    transform: translateY(-2px);
+}
+
+.btn-eliminar:hover {
+    background: #c0392b;
+    transform: translateY(-2px);
+}
+
+/* Mensaje cuando no hay cursos */
+.mensaje-container {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 0;
+}
+
+.mensaje {
+    font-size: 18px;
+    color: #7f8c8d;
+    background: white;
+    padding: 25px 40px;
+    border-radius: 10px;
+    display: inline-block;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* ---- PAGINACIÓN MEJORADA ---- */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 40px auto 20px;
+    padding: 15px 0;
+    max-width: 90%;
+    overflow-x: auto;
+    border-radius: 12px;
+    background: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.pagination-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 40px;
+    height: 40px;
+    margin: 0 4px;
+    border-radius: 8px;
+    background: #f5f7fa;
+    color: #555;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.pagination-link:hover {
+    background: #e8f4fd;
+    color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pagination-link.active {
+    background: #3498db;
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+}
+
+.pagination-link.first, 
+.pagination-link.last, 
+.pagination-link.prev, 
+.pagination-link.next {
+    background: #f0f7ff;
+    color: #3498db;
+    font-size: 14px;
+}
+
+.pagination-link.first:hover, 
+.pagination-link.last:hover, 
+.pagination-link.prev:hover, 
+.pagination-link.next:hover {
+    background: #d4e6f7;
+    color: #2471a3;
+}
+
+.pagination-ellipsis {
+    color: #888;
+    margin: 0 6px;
+    font-weight: bold;
+}
+
+/* Efecto de pulso para página actual */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 8px rgba(52, 152, 219, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
+    }
+}
+
+.pagination-link.active {
+    animation: pulse 2s infinite;
+}
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 15px;
+        margin: 15px auto;
+    }
+    
+    header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+        padding: 15px;
+    }
+    
+    .cursos-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+    }
+    
+    .pagination {
+        padding: 12px 8px;
+        margin: 30px auto 15px;
+    }
+    
+    .pagination-link {
+        min-width: 36px;
+        height: 36px;
+        margin: 0 2px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 22px;
+    }
+    
+    h2 {
+        font-size: 20px;
+    }
+    
+    .acciones {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+    }
+    
+    .btn-crear, .btn-logout {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .curso-card {
+        margin: 0 auto;
+        max-width: 100%;
+    }
+    
+    .curso-footer {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .btn-editar, .btn-eliminar {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .pagination {
+        padding: 10px 5px;
+    }
+    
+    .pagination-link {
+        min-width: 32px;
+        height: 32px;
+        margin: 0 1px;
+        font-size: 13px;
+    }
+    
+    /* En móviles muy pequeños, ocultar algunos elementos */
+    .pagination-ellipsis {
+        display: none;
+    }
 }
