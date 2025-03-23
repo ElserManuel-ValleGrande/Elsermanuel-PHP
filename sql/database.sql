@@ -10,14 +10,15 @@ CREATE TABLE usuarios (
 
 CREATE TABLE cursos (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario_id INT,
-    nombre VARCHAR(100),
-    abreviacion VARCHAR(20),
-    aula VARCHAR(50),
-    descripcion TEXT,
-    icono VARCHAR(255),
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+    usuario_id INT NOT NULL,
+    nombre VARCHAR(255) NOT NULL,
+    abreviacion VARCHAR(50) NOT NULL,
+    aula VARCHAR(100) NOT NULL,
+    descripcion TEXT NOT NULL,
+    imagen LONGBLOB,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
+
 
 /*test*/
 INSERT INTO usuarios (nombre, email, password) VALUES  

@@ -1,0 +1,33 @@
+body {
+    background: #f4f4f4;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+}
+
+.dashboard-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 50%;
+    margin: auto;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.cursos-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.curso-card {
+    background: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+.btn-crear-curso {
+    background: green;
+    color: white;
+    padding: 10px;
+}
