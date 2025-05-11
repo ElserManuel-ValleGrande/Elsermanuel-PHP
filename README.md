@@ -189,7 +189,7 @@ INSERT INTO cursos (usuario_id, nombre, abreviacion, aula, descripcion, icono) V
 
 4. Accede a la aplicación desde tu navegador
    ```
-   http://localhost/sistema-gestion-cursos/
+   http://localhost/Elsermanuel-PHP/
    ```
 
 ---
